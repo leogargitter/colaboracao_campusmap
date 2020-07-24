@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Quick Start - Leaflet</title>
+    <title>Indicadores UFPR</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,8 +21,10 @@
 
 
 
-    <div id="mapid" style="width: 600px; height: 400px;"></div>
-    <script src="medidores.js"></script>
+    <div id="mapid" style="width: 1000px; height: 600px;"></div>
+    
+    <script src="indicadores.js"></script>
+
     <script>
         var mymap = L.map('mapid').setView([-25.4505, -49.2341], 16);
 
@@ -36,8 +38,21 @@
             zoomOffset: -1
         }).addTo(mymap);
 
-        
-        L.geoJson(pontos_medidores).addTo(mymap);
+        function onEachFeature(feature, layer) {
+		var popupContent = "<p>Indicadores <b>" +
+                feature.properties.nome + "</b>:</p>" +
+                "<p>Consumo por m²: " + feature.properties.kwh_m2 + "</p>" +
+                "<p>Consumo por aluno: " + feature.properties.kwh_aluno + "</p>" +
+                "<p>Toneladas equivalentes de petróleo: " + feature.properties.tep + "</p>";
+
+
+		layer.bindPopup(popupContent);
+	}
+
+	L.geoJSON(indicadores_ufpr,{
+        onEachFeature: onEachFeature
+    }).addTo(mymap);
+
     </script>
 
 
